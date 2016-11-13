@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<note xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/note.xsd">
+  <to>Dima</to>
+  <from>Alex</from>
+  <heading>Some title</heading>
+  <body>Message for Dima</body>
+</note>
