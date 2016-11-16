@@ -9,4 +9,8 @@ public class DebugLog {
         log.debug(o);
     }
 
+    public static void error(Object o) {
+        log.error(o);
+    }
+
 }

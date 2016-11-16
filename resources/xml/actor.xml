@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/actor.xsd">
   <actor_id>1</actor_id>
-  <first_name>DMITRY</first_name>
+  <first_name>ANDREY</first_name>
   <last_name>AVGUSTIS</last_name>
-  <deleteYN>deleteYN</deleteYN>
+  <deleteYN>N</deleteYN>
 </actor>

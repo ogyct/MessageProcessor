@@ -3,7 +3,6 @@ package com.ogyct.db;
 import java.util.List;
 import java.util.Iterator;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
@@ -18,27 +17,10 @@ public class ManageActor {
     public ManageActor() {
         try {
             factory = new Configuration().configure().addAnnotatedClass(Actor.class).buildSessionFactory();
-        } catch (Throwable ex) {
-            System.err.println("Failed to create sessionFactory object." + ex);
+        } catch (Exception ex) {
+            DebugLog.error("Failed to create sessionFactory object." + ex);
             throw new ExceptionInInitializerError(ex);
         }
-//
-//        /* Add few employee records in database */
-//        Long empID1 = MA.addActor("Zara", "Ali");
-//        Long empID2 = MA.addActor("Daisy", "Das");
-//        Long empID3 = MA.addActor("John", "Paul");
-//
-//        /* List down all the employees */
-//        MA.listActors();
-//
-//        /* Update employee's records */
-//        MA.updateActor(empID1, 5000);
-//
-//        /* Delete an employee from the database */
-//        MA.deleteActor(empID2);
-//
-//        /* List down new list of the employees */
-
         DebugLog.debug("TestLog");
     }
 
@@ -54,7 +36,7 @@ public class ManageActor {
             actor.setLastName(lname);
             actorID = (Long) session.save(actor);
             tx.commit();
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             if (tx != null)
                 tx.rollback();
             e.printStackTrace();
@@ -64,67 +46,94 @@ public class ManageActor {
         return actorID;
     }
 
-    /* Method to  READ all the employees */
-    public void listActors() {
+    /**
+     * Returns list of actors
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public List<Actor> listActors() {
         Session session = factory.openSession();
         Transaction tx = null;
+        List<Actor> actors = null;
         try {
             tx = session.beginTransaction();
-            List<Actor> actors = session.createQuery("FROM Actor").list();
+            actors = session.createQuery("FROM Actor").list();
             for (Iterator<Actor> iterator = actors.iterator(); iterator.hasNext();) {
-                Actor employee = iterator.next();
-                DebugLog.debug("First Name: " + employee.getFirstName());
-                DebugLog.debug("Last Name:  " + employee.getLastName());
+                Actor actor = iterator.next();
+                DebugLog.debug("First Name: " + actor.getFirstName());
+                DebugLog.debug("Last Name:  " + actor.getLastName());
             }
             tx.commit();
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             if (tx != null)
                 tx.rollback();
-            e.printStackTrace();
+            DebugLog.error(e.getMessage());
         } finally {
             session.close();
         }
+        return actors;
     }
 
-    public void updateActor(Long ActorID, String name, String lastName) {
+    /**
+     * Updates a row in Actor table
+     * @param ActorID
+     * @param name
+     * @param lastName
+     * @return actor
+     */
+    public Actor updateActor(Long ActorID, String name, String lastName) {
         Session session = factory.openSession();
         Transaction tx = null;
+        Actor actor = null;
         try {
             tx = session.beginTransaction();
-            Actor actor = (Actor) session.get(Actor.class, ActorID);
+            actor = (Actor) session.get(Actor.class, ActorID);
             actor.setFirstName(name);
             actor.setLastName(lastName);
-            DebugLog.debug("Updating actor " + actor.toString());
+
+            DebugLog.debug("Updating " + actor);
             session.update(actor);
             tx.commit();
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             if (tx != null)
                 tx.rollback();
-            e.printStackTrace();
+            DebugLog.error(e.getMessage());
         } finally {
             session.close();
         }
+        return actor;
     }
 
-    /* Method to DELETE an employee from the records */
-    public void deleteActor(Long ActorID) {
+    /**
+     * Delete actor row
+     * @param ActorID
+     * @return
+     */
+    public Actor deleteActor(Long ActorID) {
         Session session = factory.openSession();
         Transaction tx = null;
+        Actor actor = null;
         try {
             tx = session.beginTransaction();
-            Actor actor = (Actor) session.get(Actor.class, ActorID);
+            actor = (Actor) session.get(Actor.class, ActorID);
             session.delete(actor);
             DebugLog.debug("Deleting " + actor);
             tx.commit();
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             if (tx != null)
                 tx.rollback();
-            e.printStackTrace();
+            DebugLog.error(e.getMessage());
         } finally {
             session.close();
         }
+        return actor;
     }
-    
+
+    /**
+     * Returns Actor object if found in DB, else returns null
+     * @param ActorID
+     * @return
+     */
     public Actor getActor(Long ActorID) {
         Session session = factory.openSession();
         Transaction tx = null;
@@ -135,10 +144,10 @@ public class ManageActor {
                 return null;
             }
             return actor;
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             if (tx != null)
                 tx.rollback();
-            e.printStackTrace();
+            DebugLog.error(e.getMessage());
         } finally {
             session.close();
         }

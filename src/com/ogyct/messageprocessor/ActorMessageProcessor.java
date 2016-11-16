@@ -44,7 +44,6 @@ public class ActorMessageProcessor extends MessageProcessor {
             ma.deleteActor(actor.getActorId());
         } else {
             //insert or update
-            
             if (ma.getActor(actor.getActorId()) == null) {
                 DebugLog.debug("Inserting");
                 ma.addActor(actor.getFirstName(), actor.getLastName());
@@ -52,7 +51,7 @@ public class ActorMessageProcessor extends MessageProcessor {
                 DebugLog.debug("Updating");
                 ma.updateActor(actor.getActorId(), actor.getFirstName(), actor.getLastName());
             }
-            
+
         }
 
     }

@@ -4,27 +4,28 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+
+import com.ogyct.db.ManageActor;
+import com.ogyct.mappings.Actor;
 
 /**
  * Servlet implementation class BaseServlet
  */
-@WebServlet("/BaseServlet")
-public class BaseServlet extends HttpServlet {
+@WebServlet("/ProcessMessageServlet")
+public class ProcessMessageServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BaseServlet() {
+    public ProcessMessageServlet() {
         super();
     }
 
@@ -32,7 +33,6 @@ public class BaseServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.getWriter().append("Served at: ").append(request.getContextPath());
         String inputString = request.getParameter("text1");
 
         final InputStream stream = new ByteArrayInputStream(inputString.getBytes(StandardCharsets.UTF_8));
@@ -40,14 +40,36 @@ public class BaseServlet extends HttpServlet {
         MessageProcessor mp = MessageProcessor.getInstance(stream);
         mp.performProcess();
         mp.performSubmit();
+        //to display table content in jsp
+        ManageActor ma = new ManageActor();
+
+        request.setAttribute("returnMessage", createTableFromList(ma.listActors()));
+
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
         doGet(request, response);
+    }
+
+    private String createTableFromList(List<Actor> actors) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < actors.size(); i++) {
+            sb.append("<tr>");
+            sb.append("<td>");
+            sb.append(actors.get(i).getFirstName());
+            sb.append("</td>");
+            sb.append("<td>");
+            sb.append(actors.get(i).getLastName());
+            sb.append("</td>");
+            sb.append("</tr>");
+        }
+
+        return sb.toString();
     }
 
 }
