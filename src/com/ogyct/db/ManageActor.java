@@ -1,6 +1,7 @@
 package com.ogyct.db;
 
 import java.util.List;
+import java.io.File;
 import java.util.Iterator;
 
 import org.hibernate.Session;
@@ -16,7 +17,7 @@ public class ManageActor {
 
     public ManageActor() {
         try {
-            factory = new Configuration().configure().addAnnotatedClass(Actor.class).buildSessionFactory();
+            factory = new Configuration().configure(new File("resources/hibernate.cfg.xml")).addAnnotatedClass(Actor.class).buildSessionFactory();
         } catch (Exception ex) {
             DebugLog.error("Failed to create sessionFactory object." + ex);
             throw new ExceptionInInitializerError(ex);

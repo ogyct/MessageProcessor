@@ -22,7 +22,7 @@ public class InitServlet extends HttpServlet {
     public void init() {
         String exampleXML;
         try {
-            exampleXML = Utils.readFile(getServletContext().getRealPath("/") + "xml/actor.xml", Charset.defaultCharset());
+            exampleXML = Utils.readFile(getServletContext().getRealPath("/") + "resources/xml/actor.xml", Charset.defaultCharset());
             getServletContext().setAttribute("exampleXML", exampleXML);
         } catch (IOException e) {
             DebugLog.error(e.getMessage());
