@@ -1,5 +1,6 @@
 package com.ogyct;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -7,15 +8,17 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import com.ogyct.Utils.Utils;
+
 public class DebugLog {
     public static Logger log = Logger.getLogger(DebugLog.class.getName());
     
     static {
-        String log4JPropertyFile = "resources/log4j.properties";
+        File propsFile = Utils.getResource("log4j.properties");
         Properties p = new Properties();
 
         try {
-            p.load(new FileInputStream(log4JPropertyFile));
+            p.load(new FileInputStream(propsFile));
             PropertyConfigurator.configure(p);
         } catch (IOException e) {
             

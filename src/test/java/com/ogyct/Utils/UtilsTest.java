@@ -2,9 +2,10 @@ package com.ogyct.Utils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import com.ogyct.DebugLog;
 
 public class UtilsTest {
 
@@ -14,7 +15,7 @@ public class UtilsTest {
 
     @Test
     public void testReadFile() throws IOException {
-        System.out.println(Utils.readFile("resources/xml/actor.xml", Charset.defaultCharset()));
+        DebugLog.debug((Utils.readFile(Utils.getResource("xml/actor.xml").getAbsolutePath(), Charset.defaultCharset())));
     }
 
 }
