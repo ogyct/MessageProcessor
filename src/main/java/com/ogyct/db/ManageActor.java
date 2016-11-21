@@ -5,27 +5,30 @@ import java.util.Iterator;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
 
 import com.ogyct.DebugLog;
-import com.ogyct.Utils.Utils;
 import com.ogyct.mappings.Actor;
 
+/**
+ * Class serves to execute basic DB persistence operations for Actor Table.
+ * @author avgdi
+ *
+ */
 public class ManageActor {
-    private static SessionFactory factory;
+    private SessionFactory factory;
 
+    /**
+     * Create hibernate factory
+     */
     public ManageActor() {
-        try {
-            factory = new Configuration().configure(Utils.getResource("hibernate.cfg.xml")).addAnnotatedClass(Actor.class).buildSessionFactory();
-        } catch (Exception ex) {
-            DebugLog.error("Failed to create sessionFactory object." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-        DebugLog.debug("TestLog");
+        factory = SeesionFactoryBuilder.getFactory();
     }
 
-    /* Method to CREATE an employee in the database */
+    /** 
+     * Method to CREATE an employee in the database 
+     * 
+     */
     public Long addActor(String fname, String lname) {
         Session session = factory.openSession();
         Transaction tx = null;
@@ -40,7 +43,7 @@ public class ManageActor {
         } catch (Exception e) {
             if (tx != null)
                 tx.rollback();
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             session.close();
         }
@@ -68,7 +71,7 @@ public class ManageActor {
         } catch (Exception e) {
             if (tx != null)
                 tx.rollback();
-            DebugLog.error(e.getMessage());
+            throw new RuntimeException(e);
         } finally {
             session.close();
         }
@@ -98,7 +101,7 @@ public class ManageActor {
         } catch (Exception e) {
             if (tx != null)
                 tx.rollback();
-            DebugLog.error(e.getMessage());
+            throw new RuntimeException(e);
         } finally {
             session.close();
         }
@@ -123,7 +126,7 @@ public class ManageActor {
         } catch (Exception e) {
             if (tx != null)
                 tx.rollback();
-            DebugLog.error(e.getMessage());
+            throw new RuntimeException(e);
         } finally {
             session.close();
         }
@@ -148,10 +151,9 @@ public class ManageActor {
         } catch (Exception e) {
             if (tx != null)
                 tx.rollback();
-            DebugLog.error(e.getMessage());
+            throw new RuntimeException(e);
         } finally {
             session.close();
         }
-        return null;
     }
 }

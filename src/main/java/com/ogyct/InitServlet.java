@@ -22,6 +22,7 @@ public class InitServlet extends HttpServlet {
     public void init() {
         String exampleXML;
         try {
+            //Reads actor xml file to fill as an example into textarea
             exampleXML = Utils.readFile(Utils.getResource("xml/actor.xml").getAbsolutePath(), Charset.defaultCharset());
             getServletContext().setAttribute("exampleXML", exampleXML);
         } catch (IOException e) {

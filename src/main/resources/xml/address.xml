@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<address xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/address.xsd">
+	<address_id>1</address_id>
+	<address>Mira 27-19</address>
+	<address2></address2>
+	<district>mkr1</district>
+	<city_id>Trekhgorny</city_id>
+	<postal_code>456080</postal_code>
+	<phone>69880</phone>
+	<deleteYN>N</deleteYN>
+</address>

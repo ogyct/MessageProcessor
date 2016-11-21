@@ -36,13 +36,17 @@ public class ProcessMessageServlet extends HttpServlet {
         String inputString = request.getParameter("text1");
 
         final InputStream stream = new ByteArrayInputStream(inputString.getBytes(StandardCharsets.UTF_8));
-
-        MessageProcessor mp = MessageProcessor.getInstance(stream);
-        mp.performProcess();
-        mp.performSubmit();
-        //to display table content in jsp
+        //start message processing
+        MessageProcessorAPI mpa = new MessageProcessorAPI();
+        try {
+            mpa.processMessage(stream);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("returnMessage", e.getMessage());
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
+            return;
+        }
         ManageActor ma = new ManageActor();
-
         request.setAttribute("returnMessage", createTableFromList(ma.listActors()));
 
         request.getRequestDispatcher("/index.jsp").forward(request, response);

@@ -7,11 +7,15 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import com.ogyct.DebugLog;
-import com.ogyct.MessageProcessor;
 import com.ogyct.db.ManageActor;
 import com.ogyct.mappings.Actor;
 
-public class ActorMessageProcessor extends MessageProcessor {
+/**
+ * Processor for Actor message
+ * @author avgdi
+ *
+ */
+public class ActorMessageProcessor extends BaseMessageProcessor {
     private Actor actor;
 
     public ActorMessageProcessor(InputStream in) {
@@ -29,11 +33,12 @@ public class ActorMessageProcessor extends MessageProcessor {
 
     @Override
     public void performProcess() {
-
+        //no business rules here yet
     }
 
     @Override
     public void performSubmit() {
+        super.performSubmit();
         ManageActor ma = new ManageActor();
         if ("Y".equals(actor.getDeleteYN())) {
             DebugLog.debug("Deleting");
@@ -41,19 +46,17 @@ public class ActorMessageProcessor extends MessageProcessor {
                 DebugLog.debug("No id was provided");
                 return;
             }
-            ma.deleteActor(actor.getActorId());
+            result = ma.deleteActor(actor.getActorId()).toString();
         } else {
             //insert or update
             if (ma.getActor(actor.getActorId()) == null) {
                 DebugLog.debug("Inserting");
-                ma.addActor(actor.getFirstName(), actor.getLastName());
+                result = ma.addActor(actor.getFirstName(), actor.getLastName()).toString();
             } else {
                 DebugLog.debug("Updating");
-                ma.updateActor(actor.getActorId(), actor.getFirstName(), actor.getLastName());
+                result = ma.updateActor(actor.getActorId(), actor.getFirstName(), actor.getLastName()).toString();
             }
-
         }
-
     }
 
 }

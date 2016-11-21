@@ -10,9 +10,14 @@ import org.apache.log4j.PropertyConfigurator;
 
 import com.ogyct.Utils.Utils;
 
+/**
+ * Main debug class
+ * @author avgdi
+ *
+ */
 public class DebugLog {
-    public static Logger log = Logger.getLogger(DebugLog.class.getName());
-    
+    public static Logger log;
+
     static {
         File propsFile = Utils.getResource("log4j.properties");
         Properties p = new Properties();
@@ -20,8 +25,9 @@ public class DebugLog {
         try {
             p.load(new FileInputStream(propsFile));
             PropertyConfigurator.configure(p);
+            log = Logger.getLogger(DebugLog.class.getName());
         } catch (IOException e) {
-            
+            throw new RuntimeException("Error initializing logger");
         }
     }
 
